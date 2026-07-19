@@ -8,6 +8,8 @@ import {
 } from 'lucide-react'
 import { cn } from './lib/utils'
 
+const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`
+
 const services = [
   { no: '01', title: 'Korekta lakieru', desc: 'Usuwamy zmatowienia, hologramy i drobne rysy. Lakier odzyskuje głębię bez obietnic bez pokrycia.', price: 'od 900 zł', time: '1–2 dni' },
   { no: '02', title: 'Powłoki ceramiczne', desc: 'Trwała ochrona przed chemią, UV i brudem. Dobieramy powłokę do sposobu, w jaki używasz auta.', price: 'od 1 600 zł', time: '2 dni' },
@@ -18,10 +20,10 @@ const services = [
 ]
 
 const projects = [
-  { car: 'Škoda Superb', job: 'Korekta lakieru + ceramika', image: '/images/project-sedan.webp' },
-  { car: 'Škoda Octavia Combi', job: 'Detailing kompleksowy', image: '/images/project-estate.webp' },
-  { car: 'Volkswagen Polo', job: 'Ceramika + zabezpieczenie szyb', image: '/images/project-hatch.webp' },
-  { car: 'Tesla Model 3', job: 'Pakiet PPF Front', image: '/images/project-ev.webp' },
+  { car: 'Škoda Superb', job: 'Korekta lakieru + ceramika', image: assetUrl('images/project-sedan.webp') },
+  { car: 'Škoda Octavia Combi', job: 'Detailing kompleksowy', image: assetUrl('images/project-estate.webp') },
+  { car: 'Volkswagen Polo', job: 'Ceramika + zabezpieczenie szyb', image: assetUrl('images/project-hatch.webp') },
+  { car: 'Tesla Model 3', job: 'Pakiet PPF Front', image: assetUrl('images/project-ev.webp') },
 ]
 
 const testimonials = [
@@ -104,7 +106,7 @@ function Hero() {
   const reduce = useReducedMotion()
   return <section className="relative min-h-[760px] overflow-hidden bg-ink text-white sm:min-h-[820px] lg:h-screen lg:min-h-[760px]">
     <div className="absolute inset-0">
-      <img src="/images/hero.webp" alt="Detailer polerujący lakier samochodu w studio" className="h-full w-full object-cover object-[58%_center]" fetchPriority="high" />
+      <img src={assetUrl('images/hero.webp')} alt="Detailer polerujący lakier samochodu w studio" className="h-full w-full object-cover object-[58%_center]" fetchPriority="high" />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,5,5,.94)_0%,rgba(5,5,5,.69)_48%,rgba(5,5,5,.2)_100%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(5,5,5,.75)_0%,transparent_45%)]" />
     </div>
@@ -132,12 +134,12 @@ function TrustStrip() {
 
 function Services() {
   return <section id="uslugi" className="bg-bone px-5 py-24 sm:px-8 sm:py-32 lg:px-12"><div className="mx-auto max-w-[1344px]">
-    <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: .25 }} variants={reveal} className="mb-14 grid gap-8 lg:grid-cols-2">
+    <motion.div initial={{ opacity: 1, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .25 }} transition={{ duration: .65 }} className="mb-14 grid gap-8 lg:grid-cols-2">
       <div><SectionLabel>Usługi</SectionLabel><h2 className="max-w-xl font-display text-4xl leading-[1.02] tracking-[-.04em] text-ink sm:text-6xl">Tyle, ile potrzebuje Twoje auto.</h2></div>
       <p className="max-w-lg self-end text-base leading-7 text-black/60 lg:justify-self-end">Nie sprzedajemy największego pakietu. Najpierw oglądamy auto, pytamy o sposób użytkowania i proponujemy zakres, który naprawdę ma sens.</p>
     </motion.div>
     <div className="grid border-t border-black/15 md:grid-cols-2 lg:grid-cols-3">
-      {services.map((s, i) => <motion.article key={s.no} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (i % 3) * .07 }} className="group relative min-h-[310px] border-b border-black/15 p-7 transition-colors hover:bg-white lg:p-9 md:[&:nth-child(odd)]:border-r lg:[&:not(:nth-child(3n))]:border-r lg:[&:nth-child(odd)]:border-r-0">
+      {services.map((s, i) => <motion.article key={s.no} initial={{ opacity: 1, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (i % 3) * .07 }} className="group relative min-h-[310px] border-b border-black/15 p-7 transition-colors hover:bg-white lg:p-9 md:[&:nth-child(odd)]:border-r lg:[&:not(:nth-child(3n))]:border-r lg:[&:nth-child(odd)]:border-r-0">
         <div className="flex items-center justify-between text-xs font-bold tracking-[.12em] text-black/40"><span>{s.no}</span><ArrowRight size={17} className="transition group-hover:translate-x-1 group-hover:text-black" /></div>
         <h3 className="mt-10 font-display text-2xl tracking-[-.03em] text-ink">{s.title}</h3><p className="mt-4 text-sm leading-6 text-black/58">{s.desc}</p>
         <div className="absolute bottom-7 left-7 right-7 flex justify-between border-t border-black/10 pt-4 text-xs lg:bottom-9 lg:left-9 lg:right-9"><b>{s.price}</b><span className="text-black/50">{s.time}</span></div>
@@ -149,11 +151,11 @@ function Services() {
 
 function Projects() {
   return <section id="realizacje" className="bg-ink px-5 py-24 text-bone sm:px-8 sm:py-32 lg:px-12"><div className="mx-auto max-w-[1344px]">
-    <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: .3 }} variants={reveal} className="mb-14 flex flex-col justify-between gap-8 sm:flex-row sm:items-end"><div><SectionLabel>Ostatnie realizacje</SectionLabel><h2 className="font-display text-4xl tracking-[-.045em] sm:text-6xl">Efekt mówi najwięcej.</h2></div><a href="https://instagram.com" className="flex items-center gap-2 text-sm font-semibold text-white/70 hover:text-white"><Instagram size={17} /> Więcej na Instagramie</a></motion.div>
+    <motion.div initial={{ opacity: 1, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .3 }} transition={{ duration: .65 }} className="mb-14 flex flex-col justify-between gap-8 sm:flex-row sm:items-end"><div><SectionLabel>Ostatnie realizacje</SectionLabel><h2 className="font-display text-4xl tracking-[-.045em] sm:text-6xl">Efekt mówi najwięcej.</h2></div><a href="https://instagram.com" className="flex items-center gap-2 text-sm font-semibold text-white/70 hover:text-white"><Instagram size={17} /> Więcej na Instagramie</a></motion.div>
     <div className="grid gap-5 md:grid-cols-2">
-      {projects.map((p, i) => <motion.article key={p.car} initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .18 }} transition={{ duration: .8, delay: (i % 2) * .1, ease: [0.22, 1, 0.36, 1] }} className="group overflow-hidden rounded-2xl bg-graphite">
+      {projects.map((p, i) => <motion.article key={p.car} initial={{ opacity: 1, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .18 }} transition={{ duration: .8, delay: (i % 2) * .1, ease: [0.22, 1, 0.36, 1] }} className="group overflow-hidden rounded-2xl bg-graphite">
         <motion.div initial={{ clipPath: 'inset(7% 0 7% 0)' }} whileInView={{ clipPath: 'inset(0% 0 0% 0)' }} viewport={{ once: true, amount: .25 }} transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }} className="relative aspect-[3/2] overflow-hidden">
-          <motion.img src={p.image} alt={`${p.car} po usłudze: ${p.job}`} loading="lazy" initial={{ scale: 1.09, opacity: .55 }} whileInView={{ scale: 1, opacity: 1 }} whileHover={{ scale: 1.045 }} viewport={{ once: true, amount: .25 }} transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1] }} className="h-full w-full object-cover" />
+          <motion.img src={p.image} alt={`${p.car} po usłudze: ${p.job}`} loading="lazy" initial={{ scale: 1.09, opacity: 1 }} whileInView={{ scale: 1, opacity: 1 }} whileHover={{ scale: 1.045 }} viewport={{ once: true, amount: .25 }} transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1] }} className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-60 transition-opacity duration-700 group-hover:opacity-20" /><span className="absolute left-5 top-5 rounded-full border border-white/20 bg-black/30 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[.15em] backdrop-blur-md">Realizacja 0{i + 1}</span>
         </motion.div>
         <div className="flex items-center justify-between p-5 sm:p-6"><div><h3 className="font-display text-xl">{p.car}</h3><p className="mt-1 text-xs text-muted">{p.job}</p></div><span className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-[.14em] text-white/35"><Check size={14} className="text-acid" /> Gotowe</span></div>
@@ -167,7 +169,7 @@ function Process() {
   const steps = [['01', 'Krótka rozmowa', 'Napisz lub zadzwoń. Zapytamy o auto i efekt, na którym Ci zależy.'], ['02', 'Oględziny i wycena', 'Sprawdzamy stan na miejscu. Dostajesz jasny zakres, cenę i termin.'], ['03', 'Praca i dokumentacja', 'Realizujemy uzgodniony zakres i dokumentujemy najważniejsze etapy.'], ['04', 'Odbiór bez niespodzianek', 'Oglądamy efekt razem i przekazujemy proste zalecenia pielęgnacji.']]
   return <section id="o-studio" className="bg-graphite px-5 py-24 text-bone sm:px-8 sm:py-32 lg:px-12"><div className="mx-auto max-w-[1344px]">
     <div className="grid gap-14 lg:grid-cols-[.8fr_1.2fr]"><div className="lg:sticky lg:top-32 lg:self-start"><SectionLabel>Jak pracujemy</SectionLabel><h2 className="max-w-md font-display text-4xl leading-[1.04] tracking-[-.045em] sm:text-6xl">Spokojnie. Dokładnie. Po kolei.</h2><p className="mt-7 max-w-sm text-sm leading-6 text-white/55">Oddajesz nam rzecz, o którą dbasz. Dlatego na każdym etapie wiesz, co dzieje się z Twoim autem.</p></div>
-      <div className="border-t border-white/15">{steps.map(([no, title, text], i) => <motion.div initial={{ opacity: 0, x: 35 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .5 }} transition={{ duration: .6, delay: i * .05 }} key={no} className="grid gap-3 border-b border-white/15 py-8 sm:grid-cols-[80px_1fr_1.2fr] sm:items-start sm:py-10"><span className="text-xs font-bold text-acid">{no}</span><h3 className="font-display text-xl">{title}</h3><p className="text-sm leading-6 text-white/55">{text}</p></motion.div>)}</div>
+      <div className="border-t border-white/15">{steps.map(([no, title, text], i) => <motion.div initial={{ opacity: 1, x: 35 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: .5 }} transition={{ duration: .6, delay: i * .05 }} key={no} className="grid gap-3 border-b border-white/15 py-8 sm:grid-cols-[80px_1fr_1.2fr] sm:items-start sm:py-10"><span className="text-xs font-bold text-acid">{no}</span><h3 className="font-display text-xl">{title}</h3><p className="text-sm leading-6 text-white/55">{text}</p></motion.div>)}</div>
     </div>
   </div></section>
 }
@@ -185,7 +187,7 @@ function Pricing() {
 }
 
 function PriceCard({ title, price, desc, items, featured }: { title: string, price: string, desc: string, items: string[], featured?: boolean }) {
-  return <motion.article initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .25 }} whileHover={{ y: -6 }} transition={{ duration: .55 }} className={cn('relative rounded-2xl border p-7', featured ? 'border-ink bg-ink text-bone' : 'border-black/15 bg-white text-ink')}>
+  return <motion.article initial={{ opacity: 1, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .25 }} whileHover={{ y: -6 }} transition={{ duration: .55 }} className={cn('relative rounded-2xl border p-7', featured ? 'border-ink bg-ink text-bone' : 'border-black/15 bg-white text-ink')}>
     {featured && <span className="absolute right-5 top-5 rounded-full bg-acid px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-ink">Najczęściej wybierany</span>}
     <h3 className="font-display text-2xl">{title}</h3><p className={cn('mt-2 text-xs', featured ? 'text-white/50' : 'text-black/50')}>{desc}</p><p className="mt-8 font-display text-3xl">{price}</p>
     <ul className={cn('mt-6 space-y-3 border-t pt-6 text-sm', featured ? 'border-white/15 text-white/70' : 'border-black/10 text-black/65')}>{items.map(item => <li key={item} className="flex gap-3"><Check size={16} className="shrink-0 text-lime-600" />{item}</li>)}</ul>
@@ -198,7 +200,7 @@ function Testimonials() {
   const change = (direction: number) => setActive(value => (value + direction + testimonials.length) % testimonials.length)
 
   return <section className="overflow-hidden bg-ink px-5 py-24 text-bone sm:px-8 sm:py-32 lg:px-12"><div className="mx-auto max-w-[1344px]">
-    <motion.div initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><SectionLabel>Opinie klientów</SectionLabel></motion.div>
+    <motion.div initial={{ opacity: 1, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}><SectionLabel>Opinie klientów</SectionLabel></motion.div>
     <div className="grid gap-10 lg:grid-cols-[1.45fr_.55fr]">
       <div className="h-[500px] sm:h-[410px] lg:h-[350px] xl:h-[320px]"><AnimatePresence mode="wait">
         <motion.blockquote key={active} initial={{ opacity: 0, x: 35 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -25 }} transition={{ duration: .5, ease: [0.22, 1, 0.36, 1] }}>
@@ -223,7 +225,7 @@ function FAQ() {
 }
 
 function MapSection() {
-  return <section className="bg-bone px-5 pb-24 sm:px-8 sm:pb-32 lg:px-12"><motion.div initial={{ opacity: 0, y: 35 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .18 }} transition={{ duration: .75, ease: [0.22, 1, 0.36, 1] }} className="mx-auto max-w-[1344px] overflow-hidden rounded-2xl bg-ink text-bone">
+  return <section className="bg-bone px-5 pb-24 sm:px-8 sm:pb-32 lg:px-12"><motion.div initial={{ opacity: 1, y: 35 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .18 }} transition={{ duration: .75, ease: [0.22, 1, 0.36, 1] }} className="mx-auto max-w-[1344px] overflow-hidden rounded-2xl bg-ink text-bone">
     <div className="grid lg:grid-cols-[.72fr_1.28fr]">
       <div className="flex flex-col justify-between p-7 sm:p-10 lg:p-12"><div><SectionLabel>Jak dojechać</SectionLabel><h2 className="font-display text-4xl leading-[1.05] tracking-[-.04em] sm:text-5xl">W centrum Łodzi.<br /><span className="text-white/40">Z wygodnym wjazdem.</span></h2><p className="mt-6 max-w-sm text-sm leading-6 text-white/55">Studio znajduje się przy ul. Targowej 35. Na miejscu możesz bezpiecznie zostawić samochód na czas realizacji.</p></div>
         <div className="mt-10 border-t border-white/10 pt-6"><div className="grid gap-5 text-sm sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"><div><span className="block text-[10px] font-bold uppercase tracking-widest text-white/35">Adres</span><b className="mt-1.5 block">ul. Targowa 35<br />90-043 Łódź</b></div><div><span className="block text-[10px] font-bold uppercase tracking-widest text-white/35">Godziny</span><b className="mt-1.5 block">Pon.–Pt. 8:00–18:00<br />Sob. 9:00–14:00</b></div></div><a href="https://www.google.com/maps/dir/?api=1&destination=Targowa+35,+Łódź" target="_blank" rel="noreferrer" className="group mt-7 flex min-h-14 items-center justify-between rounded-full bg-acid px-6 font-bold text-ink transition hover:bg-white">Wyznacz trasę <span className="flex items-center gap-2"><Navigation size={17} /><ExternalLink size={15} className="opacity-45 transition group-hover:opacity-100" /></span></a></div>
